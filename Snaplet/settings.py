@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
+DJANGO_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -40,11 +41,14 @@ ALLOWED_HOSTS = []
 ]
 
 LOCAL_APPS = [
+    'user'
 ]
 
 THIRD_APPS = [
 
 ]
+
+INSTALLED_APPS = DJANGO_APPS + LOCAL_APPS + THIRD_APPS
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -135,5 +139,5 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
 CART_SESSION_ID = 'cart'
-
+AUTH_USER_MODEL = 'user.User'
 REST_FRAMEWORK = {}
