@@ -1,10 +1,191 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}Snaplet{% endblock %}</title>
+
+    <!-- Tabler Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" />
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    {% block extra_css %}{% endblock %}
 </head>
 <body>
+
+    <!-- ═══════════════════════════════════════ HEADER ═══ -->
+    <header class="snap-header">
+
+        <!-- Logo -->
+        <a href="" class="snap-logo">
+            <div class="snap-logo__icon">
+                <i class="ti ti-message-circle-2"></i>
+            </div>
+            <span class="snap-logo__text">Snaplet</span>
+        </a>
+
+        <!-- Search -->
+        <div class="snap-search">
+            <i class="ti ti-search snap-search__icon"></i>
+            <input
+                type="search"
+                class="snap-search__input"
+                placeholder="Search people, snaps, tags…"
+                aria-label="Search Snaplet"
+            />
+        </div>
+
+        <!-- Nav -->
+        <nav class="snap-nav" aria-label="Main navigation">
+
+            <a href="" class="snap-nav__btn {% block nav_home %}{% endblock %}" title="Home">
+                <i class="ti ti-home"></i>
+            </a>
+
+            <a href="" class="snap-nav__btn {% block nav_explore %}{% endblock %}" title="Explore">
+                <i class="ti ti-compass"></i>
+            </a>
+
+            <a href="" class="snap-nav__btn" title="Create snap">
+                <i class="ti ti-plus"></i>
+            </a>
+
+            <a href="" class="snap-nav__btn {% block nav_messages %}{% endblock %}" title="Messages">
+                <i class="ti ti-message-circle"></i>
+                {% if unread_messages_count %}
+                    <span class="snap-nav__badge" aria-label="{{ unread_messages_count }} unread"></span>
+                {% endif %}
+            </a>
+
+            <a href="" class="snap-nav__btn {% block nav_notifications %}{% endblock %}" title="Notifications">
+                <i class="ti ti-bell"></i>
+                {% if unread_notifications_count %}
+                    <span class="snap-nav__badge" aria-label="{{ unread_notifications_count }} notifications"></span>
+                {% endif %}
+            </a>
+
+            {% if user.is_authenticated %}
+                <a href="" class="snap-nav__avatar" title="Your profile">
+                    {% if user.profile.avatar %}
+                        <img src="{{ user.profile.avatar.url }}" alt="{{ user.username }}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;" />
+                    {% else %}
+                        {{ user.username|first|upper }}
+                    {% endif %}
+                </a>
+            {% else %}
+                <a href="" class="snap-btn snap-btn--primary" style="margin-left:8px;">Log in</a>
+            {% endif %}
+
+        </nav>
+    </header>
+    <!-- ════════════════════════════════════════════════════ -->
+
+
+    <!-- Django messages (flash alerts) -->
+    {% if messages %}
+    <div class="django-messages" role="alert">
+        {% for message in messages %}
+            <div class="snap-alert snap-alert--{{ message.tags }}">
+                <i class="ti ti-info-circle"></i>
+                {{ message }}
+            </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+
+    <!-- ═══════════════════════════════════════ PAGE ═══════ -->
+    <div class="snap-page">
+
+        <!-- ── TITLE BLOCK ── -->
+        {% block page_title %}{% endblock %}
+
+        <!-- ── CONTENT BLOCK ── -->
+        <main class="snap-content" id="main-content">
+            {% block content %}{% endblock %}
+        </main>
+
+    </div>
+    <!-- ════════════════════════════════════════════════════ -->
+
+
+    <!-- ═══════════════════════════════════════ FOOTER ═══ -->
+    <footer class="snap-footer">
+        <div class="snap-footer__inner">
+
+            <div class="snap-footer__top">
+
+                <!-- Brand -->
+                <div class="snap-footer__brand">
+                    <div class="snap-footer__logo">
+                        <div class="snap-footer__logo-icon">
+                            <i class="ti ti-message-circle-2"></i>
+                        </div>
+                        <span class="snap-footer__logo-text">Snaplet</span>
+                    </div>
+                    <p class="snap-footer__tagline">Share moments that matter. Connect with people you love.</p>
+                    <div class="snap-footer__socials">
+                        <a href="#" class="snap-footer__social-link" aria-label="Instagram"><i class="ti ti-brand-instagram"></i></a>
+                        <a href="#" class="snap-footer__social-link" aria-label="X / Twitter"><i class="ti ti-brand-x"></i></a>
+                        <a href="#" class="snap-footer__social-link" aria-label="TikTok"><i class="ti ti-brand-tiktok"></i></a>
+                        <a href="#" class="snap-footer__social-link" aria-label="YouTube"><i class="ti ti-brand-youtube"></i></a>
+                    </div>
+                </div>
+
+                <!-- Product -->
+                <div>
+                    <p class="snap-footer__col-title">Product</p>
+                    <ul class="snap-footer__links">
+                        <li><a href="#">Features</a></li>
+                        <li><a href="#">Download app</a></li>
+                        <li><a href="#">Snaplet for creators</a></li>
+                        <li><a href="#">Snaplet for business</a></li>
+                        <li><a href="#">What's new</a></li>
+                    </ul>
+                </div>
+
+                <!-- Community -->
+                <div>
+                    <p class="snap-footer__col-title">Community</p>
+                    <ul class="snap-footer__links">
+                        <li><a href="#">Community guidelines</a></li>
+                        <li><a href="#">Safety center</a></li>
+                        <li><a href="#">Accessibility</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Creators</a></li>
+                    </ul>
+                </div>
+
+                <!-- Company -->
+                <div>
+                    <p class="snap-footer__col-title">Company</p>
+                    <ul class="snap-footer__links">
+                        <li><a href="#">About us</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Press</a></li>
+                        <li><a href="#">Advertise</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <div class="snap-footer__bottom">
+                <p class="snap-footer__copy">© {% now "Y" %} Snaplet, Inc. All rights reserved.</p>
+                <nav class="snap-footer__legal" aria-label="Legal links">
+                    <a href="#">Privacy policy</a>
+                    <a href="#">Terms of service</a>
+                    <a href="#">Cookie settings</a>
+                    <a href="#">Sitemap</a>
+                </nav>
+            </div>
+
+        </div>
+    </footer>
+    <!-- ════════════════════════════════════════════════════ -->
+
+
+    {% block extra_js %}{% endblock %}
 
 </body>
 </html>
