@@ -1,10 +1,262 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'base.html' %}
+{% load static %}
 
-</body>
-</html>
+{% block title %}Sign up — Snaplet{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/register.css' %}">
+{% endblock %}
+
+{% block page_title %}
+<div class="snap-page-title">
+    <div class="snap-page-title__inner">
+        <h1 class="snap-page-title__heading">Create your account</h1>
+        <p class="snap-page-title__sub">Join Snaplet and start sharing your moments</p>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="register-wrap">
+    <div class="register-card">
+
+        <div class="register-logo">
+            <div class="register-logo__icon">
+                <i class="ti ti-message-circle-2"></i>
+            </div>
+            <span class="register-logo__text">Snaplet</span>
+        </div>
+
+        <h2 class="register-heading">Sign up</h2>
+        <p class="register-sub">Fill in your details to get started</p>
+
+        <!-- Non-field errors -->
+        {% if form.non_field_errors %}
+            <div class="snap-form__non-field-errors">
+                <i class="ti ti-alert-circle"></i>
+                <ul>
+                    {% for error in form.non_field_errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+
+        <form method="POST" enctype="multipart/form-data" novalidate>
+            {% csrf_token %}
+
+
+            <!-- Avatar upload -->
+            <div class="snap-form__group avatar-group">
+                <label class="avatar-upload" for="{{ form.avatar.id_for_label }}">
+                    <div class="avatar-preview" id="avatarPreview">
+                        <i class="ti ti-camera-plus"></i>
+                    </div>
+                    <span class="avatar-upload__label">Upload avatar</span>
+                </label>
+                <input
+                    class="avatar-input"
+                    type="file"
+                    id="{{ form.avatar.id_for_label }}"
+                    name="{{ form.avatar.name }}"
+                    accept="image/*"
+                />
+                {% if form.avatar.errors %}
+                     <span class="snap-form__error">{{ form.avatar.errors.0 }}</span>
+                {% endif %}
+            </div>
+
+            <!-- Username -->
+            <div class="snap-form__group">
+                <label class="snap-form__label" for="{{ form.username.id_for_label }}">Username</label>
+                <div class="form-input-wrap">
+                    <i class="ti ti-user form-input-icon"></i>
+                    <input
+                        class="snap-form__input form-input-padded {% if form.username.errors %}error{% endif %}"
+                        type="text"
+                        id="{{ form.username.id_for_label }}"
+                        name="{{ form.username.html_name }}"
+                        placeholder="your_username"
+                        value="{{ form.username.value|default:'' }}"
+                        autocomplete="username"
+                    />
+                </div>
+                {% if form.username.errors %}
+                     <span class="snap-form__error">{{ form.username.errors.0 }}</span>
+                {% endif %}
+            </div>
+
+            <!-- Email -->
+            <div class="snap-form__group">
+                <label class="snap-form__label" for="{{ form.email.id_for_label }}">Email</label>
+                <div class="form-input-wrap">
+                    <i class="ti ti-mail form-input-icon"></i>
+                    <input
+                        class="snap-form__input form-input-padded {% if form.email.errors %}error{% endif %}"
+                        type="email"
+                        id="{{ form.email.id_for_label }}"
+                        name="{{ form.email.html_name }}"
+                        placeholder="you@example.com"
+                        value="{{ form.email.value|default:'' }}"
+                        autocomplete="email"
+                    />
+                </div>
+                 {% if form.email.errors %}
+                     <span class="snap-form__error">{{ form.email.errors.0 }}</span>
+                {% endif %}
+            </div>
+
+            <!-- First name + Last name -->
+            <div class="form-row-split">
+                <div class="snap-form__group">
+                    <label class="snap-form__label" for="{{ form.first_name.id_for_label }}">First name</label>
+                    <div class="form-input-wrap">
+                        <i class="ti ti-id form-input-icon"></i>
+                        <input
+                            class="snap-form__input form-input-padded {% if form.first_name.errors %}error{% endif %}"
+                            type="text"
+                            id="{{ form.first_name.id_for_label }}"
+                            name="{{ form.first_name.html_name }}"
+                            placeholder="John"
+                            value="{{ form.first_name.value|default:'' }}"
+                        />
+                    </div>
+                   {% if form.first_name.errors %}
+                     <span class="snap-form__error">{{ form.first_name.errors.0 }}</span>
+                    {% endif %}
+                </div>
+
+                <div class="snap-form__group">
+                    <label class="snap-form__label" for="{{ form.last_name.id_for_label }}">Last name</label>
+                    <div class="form-input-wrap">
+                        <i class="ti ti-id form-input-icon"></i>
+                        <input
+                            class="snap-form__input form-input-padded {% if form.last_name.errors %}error{% endif %}"
+                            type="text"
+                            id="{{ form.last_name.id_for_label }}"
+                            name="{{ form.last_name.html_name }}"
+                            placeholder="Doe"
+                            value="{{ form.last_name.value|default:'' }}"
+                        />
+                    </div>
+                     {% if form.last_name.errors %}
+                     <span class="snap-form__error">{{ form.last_name.errors.0 }}</span>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Phone -->
+            <div class="snap-form__group">
+                <label class="snap-form__label" for="{{ form.phone.id_for_label }}">Phone</label>
+                <div class="form-input-wrap">
+                    <i class="ti ti-phone form-input-icon"></i>
+                    <input
+                        class="snap-form__input form-input-padded {% if form.phone.errors %}error{% endif %}"
+                        type="tel"
+                        id="{{ form.phone.id_for_label }}"
+                        name="{{ form.phone.html_name }}"
+                        placeholder="+1 555 000 0000"
+                        value="{{ form.phone.value|default:'' }}"
+                        autocomplete="tel"
+                    />
+                </div>
+                 {% if form.phone.errors %}
+                     <span class="snap-form__error">{{ form.phone.errors.0 }}</span>
+                 {% endif %}
+            </div>
+
+            <!-- Bio -->
+            <div class="snap-form__group">
+                <label class="snap-form__label" for="{{ form.bio.id_for_label }}">Bio</label>
+                <textarea
+                    class="snap-form__textarea {% if form.bio.errors %}error{% endif %}"
+                    id="{{ form.bio.id_for_label }}"
+                    name="{{ form.bio.html_name }}"
+                    placeholder="Tell us a little about yourself…"
+                    rows="3"
+                >{{ form.bio.value|default:'' }}</textarea>
+                <span class="snap-form__help">Max 160 characters</span>
+                {% if form.bio.errors %}
+                     <span class="snap-form__error">{{ form.bio.errors.0 }}</span>
+                {% endif %}
+            </div>
+
+            <div class="snap-form__group">
+                <label class="snap-form__label" for="{{ form.password1.id_for_label }}">Password</label>
+                <div class="form-input-wrap">
+                    <i class="ti ti-lock form-input-icon"></i>
+                    <input
+                        class="snap-form__input form-input-padded {% if form.password1.errors %}error{% endif %}"
+                        type="tel"
+                        id="{{ form.password1.id_for_label }}"
+                        name="{{ form.password1.html_name }}"
+                        placeholder=""
+                        value="{{ form.password1.value }}"
+                        autocomplete="tel"
+                    />
+                </div>
+                 {% if form.password1.errors %}
+                     <span class="snap-form__error">{{ form.password1.errors.0 }}</span>
+                 {% endif %}
+            </div>
+
+            <div class="snap-form__group">
+                <label class="snap-form__label" for="{{ form.password2.id_for_label }}">Repeat password</label>
+                <div class="form-input-wrap">
+                    <i class="ti ti-lock form-input-icon"></i>
+                    <input
+                        class="snap-form__input form-input-padded {% if form.password2.errors %}error{% endif %}"
+                        type="tel"
+                        id="{{ form.password2.id_for_label }}"
+                        name="{{ form.password2.html_name }}"
+                        placeholder=""
+                        value="{{ form.password2.value|default:'' }}"
+                        autocomplete="tel"
+                    />
+                </div>
+                 {% if form.password2.errors %}
+                     <span class="snap-form__error">{{ form.password2.errors.0 }}</span>
+                 {% endif %}
+            </div>
+
+            <button class="snap-btn snap-btn--primary btn-full" type="submit">
+                <i class="ti ti-user-plus"></i> Create account
+            </button>
+
+        </form>
+
+        <div class="login-row">
+            Already have an account? <a href="{% url 'users:login' %}">Log in</a>
+        </div>
+
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Avatar preview
+    const avatarInput = document.querySelector('.avatar-input');
+    const avatarPreview = document.getElementById('avatarPreview');
+
+    avatarInput.addEventListener('change', function () {
+        const file = this.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                avatarPreview.innerHTML = `<img src="${e.target.result}" alt="Avatar preview" />`;
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
+    // Clear error state on input
+    document.querySelectorAll('.snap-form__input, .snap-form__textarea').forEach(function (field) {
+        field.addEventListener('input', function () {
+            this.classList.remove('error');
+            const errorMsg = this.closest('.snap-form__group, .form-row-split .snap-form__group')?.querySelector('.snap-form__error');
+            if (errorMsg) errorMsg.style.display = 'none';
+        });
+    });
+</script>
+{% endblock %}

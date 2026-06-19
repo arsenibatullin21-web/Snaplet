@@ -16,15 +16,17 @@ class UserRegisterForm(UserCreationForm):
     username = UsernameField(required=True)
     password1 = forms.CharField(required=True, validators=[validate_password, ])
     password2 = forms.CharField(required=True)
+    phone = forms.CharField(required=True)
 
     class Meta:
         model = get_user_model()
-        fields = ['username', 'email', 'first_name', 'last_name', 'bio', 'avatar', 'phone']
+        fields = ['username', 'email', 'first_name', 'last_name', 'bio', 'avatar', 'phone', 'password1', 'password2']
+
 
     def clean_username(self):
         username = self.cleaned_data['username']
         if get_user_model().objects.filter(username=username).exists():
-            raise forms.ValidationError('Username already exists!')
+            raise forms.ValidationError('Username already exists')
         return username
 
     def clean_email(self):
@@ -34,7 +36,7 @@ class UserRegisterForm(UserCreationForm):
         return email
 
     def clean(self):
-        password1 = self.cleaned_data['password1']
-        password2 = self.cleaned_data['password2']
+        password1 = self.cleaned_data.get('password1')
+        password2 = self.cleaned_data.get('password2')
         if password1 != password2:
             raise forms.ValidationError('Passwords do not match')

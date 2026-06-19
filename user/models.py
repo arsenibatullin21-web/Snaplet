@@ -5,7 +5,7 @@ from django.contrib.auth.models import AbstractUser
 class User(AbstractUser):
     bio = models.TextField(max_length=500, blank=True)
     avatar = models.ImageField(upload_to='avatars/', blank=True, null=True, default='profile_images/noimage.jpg')
-    phone = models.CharField(max_length=10, blank=True)
+    phone = models.CharField(blank=True)
     # subscription = models.ForeignKey(to=Subscription,)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

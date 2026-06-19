@@ -1,5 +1,97 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block title %}Log in — Snaplet{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/login.css' %}">
+{% endblock %}
+
+{% block page_title %}
+<div class="snap-page-title">
+    <div class="snap-page-title__inner">
+        <h1 class="snap-page-title__heading">Log in</h1>
+        <p class="snap-page-title__sub">Welcome back — pick up where you left off</p>
+    </div>
+</div>
+{% endblock %}
+
 {% block content %}
+<div class="login-wrap">
+    <div class="login-card">
+
+        <div class="login-logo">
+            <div class="login-logo__icon">
+                <i class="ti ti-message-circle-2"></i>
+            </div>
+            <span class="login-logo__text">Snaplet</span>
+        </div>
+
+        <h2 class="login-heading">Welcome back</h2>
+        <p class="login-sub">Log in to your account to continue</p>
+
+
+
+{#        <div class="snap-alert snap-alert--success" id="alertSuccess" style="display:none;">#}
+{#            <i class="ti ti-circle-check"></i>#}
+{#            Logged in successfully!#}
+{#        </div>#}
+
+        <form id="loginForm" method="post">
+            {% csrf_token %}
+
+                    {% if form.non_field_errors %}
+                        <span class="snap-form__error">{{ form.non_field_errors }}</span>
+                    {% endif %}
+
+
+            <div class="snap-form__group">
+                <label class="snap-form__label" for="username">Email</label>
+                <div class="form-input-wrap">
+                    <i class="ti ti-user form-input-icon"></i>
+                    <input class="snap-form__input form-input-padded" type="text" id="username" name="{{ form.username.name }}" placeholder="todd@mail.ru" />
+                </div>
+                {% if form.username.errors %}
+                    <span class="snap-form__error">{{ form.username.errors.0 }}</span>
+                {% endif %}
+
+            </div>
+
+            <div class="snap-form__group">
+                <label class="snap-form__label" for="password">Password</label>
+                <div class="form-input-wrap">
+                    <i class="ti ti-lock form-input-icon"></i>
+                    <input class="snap-form__input form-input-padded" type="password" id="password" name="{{ form.password.name }}" placeholder="••••••••" autocomplete="current-password" />
+                    <button class="form-input-toggle" type="button" id="togglePwd" aria-label="Show password">
+                        <i class="ti ti-eye" id="toggleIcon"></i>
+                    </button>
+                    {% if form.password.errors %}
+                    <span class="snap-form__error">{{ form.password.errors.0 }}</span>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="form-row">
+                <label class="form-remember">
+                    <input type="checkbox" name="remember" /> Remember me
+                </label>
+                <a class="form-forgot" href="#">Forgot password?</a>
+            </div>
+
+            <button class="snap-btn snap-btn--primary btn-full" type="submit">
+                <i class="ti ti-login"></i> Log in
+            </button>
+
+        </form>
+
+        <div class="signup-row">
+            Don't have an account? <a href="">Sign up</a>
+        </div>
+
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+
 {% endblock %}
