@@ -7,6 +7,8 @@
 <body>
 <form action="{% url 'users:logout' %}">
     <button>Logout</button>
+    <h4>Followers {{ user.followers_count }}</h4>
+    <h4>Following {{ user.following_count }}</h4>
 </form>
 </body>
 </html>
